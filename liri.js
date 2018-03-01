@@ -2,13 +2,12 @@ var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 require("dotenv").config();
 var keys = require("./keys.js");
-// console.log(keys);
-
 var fs = require("fs");
-
 var twitterKeys = keys.twitter;
 var client = new Twitter(keys.twitter);
-// console.log(client);
+var spotify = new Spotify(keys.spotify);
+var input = process.argv[2].toLowerCase();
+
 
 // // console.log(spotifyKeys);
 // // console.log("=======")
@@ -24,10 +23,10 @@ var client = new Twitter(keys.twitter);
 //     console.log(tweet);  // Tweet body. 
 //     console.log(response);  // Raw response object. 
 //     });
-
-client.get("statuses/user_timeline", function(error, tweets, response){
-    if(error) throw error;
-    for(var i=0; i<tweets.length;i++){
-console.log(i + ")" + "On - "+ tweets[i].created_at + " - " + tweets[i].text)
+if (input == "my-tweets"){
+    client.get("statuses/user_timeline", function(error, tweets, response){
+        if(error) throw error;
+        for(var i=0; i<tweets.length;i++){
+    console.log(i + ")" + "On - "+ tweets[i].created_at + " - " + tweets[i].text)
+    }});
 }
-});
