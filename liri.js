@@ -3,6 +3,7 @@ var Spotify = require('node-spotify-api');
 require("dotenv").config();
 var keys = require("./keys.js");
 var fs = require("fs");
+var request = require('request')
 var twitterKeys = keys.twitter;
 var client = new Twitter(keys.twitter);
 var spotify = new Spotify(keys.spotify);
@@ -32,6 +33,7 @@ if(action){
         console.log(i + ")" + "On - "+ tweets[i].created_at + " - " + tweets[i].text)
     }});
     }else if (action == "spotify-this-song"){
+        if(query){
         spotify.search({ type: 'track', query: query }, function(err, data) {
             if (err) {
             return console.log('Error occurred: ' + err);
@@ -41,5 +43,22 @@ if(action){
             console.log("Artists: " + results.artists[0].name);
             console.log("Album: " + results.album.name);
             console.log("Listen Here: " + results.preview_url);
-    })}
-}else {console.log(spotify)}
+            })
+        }else{spotify
+            .request("https://api.spotify.com/v1/tracks/0hrBpAOgrt8RXigk83LLNE")
+            .then(function(data){
+                console.log("Title: " + data.name)
+                console.log("Artists: " + data.artists[0].name);
+                console.log("Album: " + data.album.name);
+                console.log("Listen Here: " + data.preview_url);
+            })
+            .catch(function(err){
+                console.log("Error: " + err);
+            })}
+    }
+}else {
+    console.log("Commands");
+    console.log("========");
+    console.log("Look up a song with - spotify-this-song '<your search term>'")
+    console.log("List your moost recent tweets with - my-tweets")
+}
