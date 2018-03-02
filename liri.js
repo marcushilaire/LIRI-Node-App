@@ -55,10 +55,39 @@ if(action){
             .catch(function(err){
                 console.log("Error: " + err);
             })}
+    }else if (action == "movie-this"){
+        if(query){
+        var queryURL= "https://www.omdbapi.com/?t=" + query + "&y=&plot=short&apikey=trilogy"
+        request(queryURL, function(error, response, body){
+            if (!error && response.statusCode === 200){
+                var results = JSON.parse(body)
+                console.log("Title: " + results.Title)
+                console.log("Year: " + results.Year)
+                console.log("Rated " + results.imdbRating+ " on IMDB")
+                console.log("Produced in: " + results.Country)
+                console.log("Language: " + results.Language)
+                console.log("Plot: " + results.Plot)
+                console.log("Cast: " + results.Actors)
+            }
+        })}else{
+        var queryURL= "https://www.omdbapi.com/?t=Mr Nobody&y=&plot=short&apikey=trilogy"
+        request(queryURL, function(error, response, body){
+            if (!error && response.statusCode === 200){
+                var results = JSON.parse(body)
+                console.log("Title: " + results.Title)
+                console.log("Year: " + results.Year)
+                console.log("Rated " + results.imdbRating+ " on IMDB")
+                console.log("Produced in: " + results.Country)
+                console.log("Language: " + results.Language)
+                console.log("Plot: " + results.Plot)
+                console.log("Cast: " + results.Actors)
+            }
+        })}
     }
 }else {
     console.log("Commands");
     console.log("========");
     console.log("Look up a song with - spotify-this-song '<your search term>'")
-    console.log("List your moost recent tweets with - my-tweets")
+    console.log("Find information on a movie with - movie-this '<your search term>")
+    console.log("List your moost recent tweets with - my-tweets")    
 }
