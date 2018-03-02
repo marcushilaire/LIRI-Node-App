@@ -9,8 +9,8 @@ var client = new Twitter(keys.twitter);
 var spotify = new Spotify(keys.spotify);
 var action = process.argv[2];
 var query = process.argv[3];
-
-if(action){
+var liri = function(){
+    if(action){
     if (action == "my-tweets"){
         client.get("statuses/user_timeline", function(error, tweets, response){
             if(error) throw error;
@@ -75,4 +75,18 @@ if(action){
     console.log("Look up a song with - spotify-this-song '<your search term>'")
     console.log("Find information on a movie with - movie-this '<your search term>")
     console.log("List your moost recent tweets with - my-tweets")    
-}
+    console.log("If you're feeling extra spicy, run a command from the text file with - simon-says")
+}}
+if(action == "simon-says"){
+    fs.readFile("random.txt", "utf8", function(error,data){
+        if (error) {
+            return console.log(error);
+          }
+          var dataArr = data.split(",");
+          action = dataArr[0]
+          query = dataArr[1]
+          console.log("====");
+          console.log("Simon Says: " + action + " " + query);
+        liri();
+    })
+}else {liri()}
