@@ -6,7 +6,8 @@ var fs = require("fs");
 var twitterKeys = keys.twitter;
 var client = new Twitter(keys.twitter);
 var spotify = new Spotify(keys.spotify);
-var input = process.argv[2].toLowerCase();
+var action = process.argv[2];
+var query = process.argv[3];
 
 
 // // console.log(spotifyKeys);
@@ -23,10 +24,22 @@ var input = process.argv[2].toLowerCase();
 //     console.log(tweet);  // Tweet body. 
 //     console.log(response);  // Raw response object. 
 //     });
-if (input == "my-tweets"){
-    client.get("statuses/user_timeline", function(error, tweets, response){
-        if(error) throw error;
-        for(var i=0; i<tweets.length;i++){
-    console.log(i + ")" + "On - "+ tweets[i].created_at + " - " + tweets[i].text)
+if(action){
+    if (action == "my-tweets"){
+        client.get("statuses/user_timeline", function(error, tweets, response){
+            if(error) throw error;
+            for(var i=0; i<tweets.length;i++){
+        console.log(i + ")" + "On - "+ tweets[i].created_at + " - " + tweets[i].text)
     }});
-}
+    }else if (action == "spotify-this-song"){
+        spotify.search({ type: 'track', query: query }, function(err, data) {
+            if (err) {
+            return console.log('Error occurred: ' + err);
+            }
+            var results = data.tracks.items[0];
+            console.log("Title: " + results.name)
+            console.log("Artists: " + results.artists[0].name);
+            console.log("Album: " + results.album.name);
+            console.log("Listen Here: " + results.preview_url);
+    })}
+}else {console.log(spotify)}
